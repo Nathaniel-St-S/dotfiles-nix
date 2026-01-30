@@ -1,0 +1,20 @@
+//spawn-at-startup "waybar"
+
+spawn-at-startup "swww-daemon"
+
+spawn-at-startup "hypridle"
+
+spawn-at-startup "swaync"
+
+spawn-at-startup "xwayland-satellite"
+
+spawn-sh-at-startup "clipse -listen"
+
+spawn-at-startup "udiskie"
+
+spawn-at-startup "generate-colors"
+
+hotkey-overlay {
+  skip-at-startup
+}
+

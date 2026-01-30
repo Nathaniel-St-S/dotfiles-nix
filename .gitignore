@@ -1,0 +1,16 @@
+# Ignore logs and temp
+*.log
+*.swp
+*.bak
+*.tmp
+*.backup
+*.original
+
+# Ignore editor backups
+*~
+
+# Ignore secrets
+configs/git/credentials
+
+# Ignore lazy lock
+configs/nvim/lazy-lock.json
