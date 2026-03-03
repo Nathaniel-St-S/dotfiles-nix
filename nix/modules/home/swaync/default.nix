@@ -1,8 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, autoImport, ... }: {
 
-  imports = [
-    ./colors.nix
-  ];
+  imports = autoImport { path =./.; exclude = [ ./style.nix ]; };
 
   home.packages = with pkgs; [
     swaynotificationcenter

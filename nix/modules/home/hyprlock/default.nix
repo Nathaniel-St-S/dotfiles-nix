@@ -1,11 +1,8 @@
-{ pkgs, username, ... }: {
+{ pkgs, username, autoImport, ... }: {
 
   home.packages = with pkgs; [ hyprlock playerctl ];
 
-  imports = [
-    ./hyprlock-battery-info.nix
-    ./hyprlock-song-details.nix
-  ];
+  imports = autoImport { path = ./scripts; };
 
   programs.hyprlock = {
     enable = true;

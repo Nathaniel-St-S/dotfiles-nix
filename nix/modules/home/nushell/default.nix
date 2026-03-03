@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, autoImport, ... }:
 
 let
   dataDir   = config.xdg.dataHome;
@@ -17,6 +17,8 @@ in
     tree
     ffmpeg
   ];
+
+  imports = autoImport { path = ./.; };
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Nushell
@@ -142,11 +144,4 @@ in
       }
     '';
   };
-
-  imports = [
-    ./aliases.nix
-    ./prompt.nix
-    ./keybinds.nix
-    ./commands.nix
-  ];
 }

@@ -2,9 +2,12 @@
 
 { hostname, isLaptop ? true, username ? "nathaniels" }:
 
+let
+  autoImport = import ./autoImport.nix { inherit (nixpkgs) lib; };
+in
 nixpkgs.lib.nixosSystem {
   specialArgs = {
-    inherit inputs isLaptop username;
+    inherit inputs isLaptop username autoImport;
   };
 
   modules = [
@@ -26,7 +29,7 @@ nixpkgs.lib.nixosSystem {
       home-manager = {
         useGlobalPkgs    = true;
         useUserPackages  = true;
-        extraSpecialArgs = { inherit inputs username; };
+        extraSpecialArgs = { inherit inputs username autoImport; };
         backupFileExtension = "hm-backup";
         users.${username} = import ../modules/home;
       };

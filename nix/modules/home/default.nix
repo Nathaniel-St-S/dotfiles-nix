@@ -1,29 +1,10 @@
-{ pkgs, username, ... }: 
+{ pkgs, username, autoImport, ... }: 
 
 let
   homePrefix = if pkgs.stdenv.isDarwin then "/Users" else "/home";
-in{
+in {
 
-  imports = [
-    ./bin
-    ./zsh
-    ./nushell
-    ./ghostty
-    ./tmux
-    ./nvim
-    ./git
-    ./niri
-    ./zen
-    ./waybar
-    ./wal
-    ./btop
-    ./waypaper
-    ./swaync
-    ./rofi
-    ./hyprlock
-    ./hypridle
-    ./gtk
-  ];
+  imports = autoImport { path = ./.; exclude = [ ./kitty ./tmux ]; };
 
   programs.home-manager.enable = true;
 

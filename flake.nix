@@ -27,11 +27,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # niri = {
-    #   url = "github:sodiboo/niri-flake";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +39,7 @@
   };
 
   outputs = { 
-    nixpkgs, nur, home-manager, 
+    nixpkgs, nur, home-manager,
     zen-browser, firefox-addons, 
     impermanence, agenix, secrets, 
     ... } @ inputs:

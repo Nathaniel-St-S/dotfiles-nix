@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, autoImport, ... }:
 
 {
-  imports = [ ./colors.nix ./theme.nix ];
+  imports = autoImport { path = ./.; };
 
   programs.rofi = {
     enable  = true;

@@ -1,14 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, autoImport, ... }:
 
 {
   home.sessionVariables = {
     ZDOTDIR     = "$HOME/.config/zsh";
   };
 
-  imports = [
-    ./zsh-init.nix
-    ./p10k.nix
-  ];
+  imports = autoImport { path = ./.; };
 
   home.packages = with pkgs; [
     zoxide

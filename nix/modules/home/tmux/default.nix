@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, autoImport, ... }:
 
 let
   tmux-transient-status = pkgs.tmuxPlugins.mkTmuxPlugin {
@@ -15,10 +15,7 @@ in
 {
   home.packages = with pkgs; [ tmux ];
 
-  imports = [
-    ./tmux-menu.nix
-    ./tmux-scratch.nix
-  ];
+  imports = autoImport { path = ./scripts; };
 
   programs.tmux = {
     enable     = true;

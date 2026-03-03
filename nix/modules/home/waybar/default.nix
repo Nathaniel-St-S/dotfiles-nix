@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, autoImport, ... }:
 
 let
   waybar-generate-colors = pkgs.writeShellScriptBin "waybar-generate-colors" ''
@@ -37,12 +37,7 @@ in
     calcurse
   ];
 
-  imports = [
-    ./scripts/waybar-uptime.nix
-    ./scripts/waybar-ssh-info.nix
-    ./scripts/waybar-ssh-status.nix
-    ./scripts/waybar-ssh-check.nix
-  ];
+  imports = autoImport { path = ./scripts; };
 
   programs.waybar = {
     enable = true;

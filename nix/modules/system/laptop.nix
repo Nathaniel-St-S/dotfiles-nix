@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ ... }: {
 
   # Laptop-specific hardware and power management
   services.tlp.enable = true;

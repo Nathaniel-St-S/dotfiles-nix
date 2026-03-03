@@ -1,10 +1,8 @@
-{ config, pkgs, ... }:{
+{ config, pkgs, autoImport, ... }:{
 
   home.packages = with pkgs; [ ghostty pywal ];
 
-  imports = [
-    ./cursor-smear.nix
-  ];
+  imports = autoImport { path = ./.; };
 
   programs.ghostty = {
     enable = true;
