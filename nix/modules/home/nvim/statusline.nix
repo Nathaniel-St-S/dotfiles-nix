@@ -35,29 +35,14 @@
     -- ============================================================================
     -- GIT BRANCH
     -- ============================================================================
-    local cached_branch = ""
-    local cached_repo   = ""
-    
-    local function update_branch()
-      vim.system({ "git", "branch", "--show-current" }, { text = true }, function(result)
-        cached_branch = (result.code == 0 and result.stdout ~= "")
-          and result.stdout:gsub("\n", "")
-          or ""
-      end)
-      vim.system({ "git", "rev-parse", "--show-toplevel" }, { text = true }, function(result)
-        if result.code == 0 and result.stdout ~= "" then
-          cached_repo = vim.fn.fnamemodify(result.stdout:gsub("\n", ""), ":t")
-        else
-          cached_repo = ""
-        end
-      end)
-    end
-    
-    vim.uv.new_timer():start(0, 5000, vim.schedule_wrap(update_branch))
-    
     local function git_branch()
-      if cached_branch == "" then return "" end
-      return "\u{f101} " .. cached_repo .. " \u{e725} " .. cached_branch
+      local head = vim.b.gitsigns_head or ""
+      if head == "" then return "" end
+
+      local status_dict = vim.b.gitsigns_status_dict
+      local repo = (status_dict and status_dict.root)
+        and vim.fn.fnamemodify(status_dict.root, ":t")
+      return "\u{f101} " .. repo .. " \u{e725} " .. head
     end
     
     -- ============================================================================

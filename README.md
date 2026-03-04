@@ -21,8 +21,6 @@
 - [Screenshots](#screenshots)
 - [Applications](#applications)
 - [Installation](#installation)
-  - [Fresh Install](#fresh-install)
-  - [Existing System](#existing-system)
 - [Configuration](#configuration)
 - [Usage](#usage)
 
@@ -30,8 +28,8 @@
 I use these apps :O
 
 ### Core
-- **Shell**: zsh, nushell (interactive)
-- **Terminal**: kitty
+- **Shell**: zsh, (nushell for interactive)
+- **Terminal**: ghostty
 - **Multiplexer**: tmux
 - **Editor**: neovim
 - **WM**: niri
@@ -103,8 +101,8 @@ sudo nixos-generate-config --show-hardware-config > nix/hosts/<hostname>/hardwar
 ```bash
 waypaper
 # This opens the waypaper GUI
-# On first launch, run generate-colors manually to apply the theme:
-generate-colors
+# On first launch, run generate-colors or random-wallpaper manually to apply the theme:
+generate-colors || random-wallpaper
 ```
 
 ### Customization
@@ -121,17 +119,6 @@ Wallpaper changes automatically update all application themes via `generate-colo
 1. Runs pywal to generate a colorscheme from the wallpaper
 2. Updates colors for waybar, rofi, niri borders, btop, and swaync
 3. Reloads swaync and restarts waybar
-
-#### Adding a Platform
-The `mkHost` function in `nix/lib/mkHost.nix` accepts a `platform` argument. Supported values:
-
-| Value | System |
-|---|---|
-| `linux` (default) | `x86_64-linux` |
-| `linux32` | `i686-linux` |
-| `arm` | `aarch64-linux` |
-| `darwin` | `aarch64-darwin` |
-| `darwin-intel` | `x86_64-darwin` |
 
 ---
 
@@ -169,5 +156,9 @@ waypaper
 
 # Manually regenerate colors from the current wallpaper
 generate-colors
+
+# Choose a random wallpaper and apply it's theme
+# There is a Niri keybind for this, Mod+Alt+w
+random-wallpaper
 ```
 

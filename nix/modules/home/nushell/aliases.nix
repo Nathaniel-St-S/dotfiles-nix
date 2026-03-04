@@ -38,10 +38,15 @@
     switch    = "nh os switch";
     test      = "nh os test";
     rollback  = "nh os rollback";
-    gcollect  = "nh clean all";
+    gcollect  = "nh clean all --keep-since 7d --keep 3";
     gcollectd = "nh clean all --nogcroots";
-    flakeup   = "sudo nix flake update";
+    flakeup   = "nix flake update";
     optimize  = "sudo nix-store --optimize";
+    furnish   = "nh home switch";
+    unpack    = "nh home switch --dry-run";
+    leave     = "nh home rollback";
+    tidy      = "nh home clean --keep-since 7d --keep 3";
+    douse     = "nh home clean all --nogcroots";
 
     x         = "exit";
     halt      = "sudo halt";
@@ -67,7 +72,7 @@
     gp  = "git push";
     gu  = "git pull";
     gl  = ''^git log --graph --date=format:"%d/%m/%y" --pretty=format:"%C(yellow)%h%Creset %C(white)%ad%Creset %C(bold)%s %C(bold green)%D%Creset%n"'';
-    gb  = "git brach";
+    gb  = "git branch";
     gi  = "git init";
     gw  = "git switch";
     go  = "git checkout";

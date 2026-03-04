@@ -28,7 +28,7 @@
 
     # Searches for text in all files in the current folder
     def ftext [pattern: string] {
-      ls **/* 
+      ls -a **/* 
       | where type == "file"
       | each { |file|
           try {
@@ -201,12 +201,12 @@
 
     # SEARCH RUNNING PROCESSES
     def p [pattern: string] {
-      PS | GREP -I $pattern
+      ls -a | grep -i $pattern
     }
 
     # SEARCH FILES IN THE CURRENT DIRECTORY
     def f [pattern: string] {
-      LS **/* | where name =~ ('(?I)' + $pattern)
+      ls -a **/* | where name =~ ('(?i)' + $pattern)
     }
   '';
 }

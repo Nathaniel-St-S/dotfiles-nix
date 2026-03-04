@@ -20,6 +20,7 @@
     map("v", "p", '"_dP', options) -- Keep last yanked when pasting
     map("v", "<", "<gv", options) -- Stay in indent mode
     map("v", ">", ">gv", options) -- Stay in indent mode
+    map("v", "=", "=gv", options) -- Stay in indent mode
     map("n", "<C-q>", ": q! <CR>", options) -- Quit file
     map("n", "x", '"_x', options) -- Delete single character without copying into register
     map("n", "<C-d>", "<C-d>zz", options) -- Vertical scroll and center
@@ -27,12 +28,42 @@
     map("n", "n", "nzzzv", options) -- Find and center
     map("n", "N", "Nzzzv", options) -- Find and center
     map("n", "<M-j>", ":m .+1<CR>==", options) -- Move line down one
-    map("v", "<M-j>", ":m '>+1<CR>gv=gv", options) -- Move selected lines down one
     map("n", "<M-k>", ":m .-2<CR>==", options) -- Move line up one
-    map("v", "<M-k>", ":m '<-2<CR>gv=gv", options) -- Move selected lines up one
     map({ "n", "v", "x" }, ";", ":") -- No need to shift for commands
     map({ "n", "v", "x" }, ":", ";") -- Whatever this does
-    
+    local function move_lines(dir)
+      local start_line = vim.fn.line("v")
+      local end_line   = vim.fn.line(".")
+
+      if start_line > end_line then
+        start_line, end_line = end_line, start_line
+      end
+
+      local count = end_line - start_line + 1
+
+      if dir == "down" then
+        if end_line >= vim.fn.line("$") then return end
+        vim.cmd(start_line .. "," .. end_line .. "m " .. (end_line + 1))
+      else
+        if start_line <= 1 then return end
+        vim.cmd(start_line .. "," .. end_line .. "m " .. (start_line - 2))
+      end
+
+      local new_start = start_line + (dir == "down" and 1 or -1)
+      local new_end   = new_start + count - 1
+
+      -- Reindent using normal mode = operator
+      vim.api.nvim_win_set_cursor(0, { new_start, 0 })
+      vim.cmd("normal! " .. count .. "==")
+
+      vim.fn.setpos("'<", { 0, new_start, 1, 0 })
+      vim.fn.setpos("'>", { 0, new_end,   1, 0 })
+      vim.cmd("normal! gv")
+    end
+
+    map("v", "<M-j>", function() move_lines("down") end, options)
+    map("v", "<M-k>", function() move_lines("up")   end, options)
+
     -- Window
     map("n", "<C-w>l", "<C-w><", options)
     map("n", "<C-w>h", "<C-w>>", options)
@@ -45,9 +76,8 @@
     map("n", "<C-j>", ":wincmd j<CR>", options) -- Navigate Split Down
     map("n", "<C-k>", ":wincmd k<CR>", options) -- Navigate Split Up
     map("n", "<C-l>", ":wincmd l<CR>", options) -- Navigate Split Right
-    
+
     -- LSP
-    map("n", "<leader>M", ":Mason<CR>", options)
     map("n", "<leader>I", ":LspInfo<CR>", options)
     map("n", "<leader>f", ":lua vim.lsp.buf.format({ async = true })<CR>", options)
     map("n", "<leader>o", ":lua vim.diagnostic.open_float()<CR>", options)
@@ -62,14 +92,14 @@
     map("n", "]c", function()
       vim.fn.search([[^\s*\(//\|#\|--\|\/\*\|;\|#|\)]], "W")
     end, options)
-    
+
     -- Gitsigns
     map("n", "<leader>gb", ":Gitsigns blame_line<CR>", options)
     map("n", "<leader>gt", ":Gitsigns toggle_current_line_blame<CR>", options)
     map("n", "<leader>gh", ":Gitsigns preview_hunk_inline<CR>", options)
     map("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", options)
     map("n", "<leader>gd", ":Gitsigns diffthis<CR>", options)
-    
+
     -- Telescope
     map("n", "<leader>T", ":Telescope<CR>", options)
     map("n", "<leader>tf", ":Telescope find_files<CR>", options)
@@ -84,7 +114,7 @@
     map("n", "<leader>tq", ":Telescope loclist<CR>", options)
     map("n", "<leader>tj", ":Telescope jumplist<CR>", options)
     map("n", "<leader>ta", ":Telescope current_buffer_fuzzy_find<CR>", options)
-    
+
     map("n", "<leader>tr", ":Telescope lsp_references<CR>", options)
     map("n", "<leader>tz", ":Telescope lsp_incoming_calls<CR>", options)
     map("n", "<leader>to", ":Telescope lsp_outgoing_calls<CR>", options)
@@ -93,7 +123,7 @@
     map("n", "<leader>ti", ":Telescope lsp_implementations<CR>", options)
     map("n", "<leader>td", ":Telescope lsp_definitions<CR>", options)
     map("n", "<leader>tt", ":Telescope lsp_type_definitions<CR>", options)
-    
+
     -- Typst
     map("n", "<leader>yp", ":TypstPreview<CR>", options)
     map("n", "<leader>yu", ":TypstPreviewUpdate<CR>", options)
@@ -103,13 +133,17 @@
     map("n", "<leader>yn", ":TypstPreviewNoFollowCursor<CR>", options)
     map("n", "<leader>yf", ":TypstPreviewFollowCursorToggle<CR>", options)
     map("n", "<leader>yy", ":TypstPreviewSyncCursor<CR>", options)
-    
+
+    -- Markdown Preview
+    map("n", "<leader>mp", ":MarkdownPreview<CR>", options)
+    map("n", "<leader>mps", ":MarkdownPreviewStop<CR>", options)
+
     -- Automatically make a new session
     map("n", "<leader>ss", function()
       vim.cmd("mksession!")
       print("Session saved!")
     end, { desc = "Save session" })
-    
+
     --create a new terminal running racket
     map("n", "<leader>sr", function()
       vim.cmd("w") -- Save file first

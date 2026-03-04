@@ -42,7 +42,7 @@
           text        = ''cmd[update:1000] echo -e "$(date +"%H")"'';
           color       = "rgba(FFFFFFDD)";
           font_size   = 130;
-          font_family = "Maple Mono Bold";
+          font_family = "Maple Mono NF CN";
           position    = "0, -240";
           halign      = "center";
           valign      = "top";
@@ -54,7 +54,7 @@
           text        = ''cmd[update:1000] echo -e "$(date +"%M")"'';
           color       = "rgba(FFFFFFDD)";
           font_size   = 130;
-          font_family = "Maple Mono Bold";
+          font_family = "Maple Mono NF CN";
           position    = "0, -400";
           halign      = "center";
           valign      = "top";
@@ -78,7 +78,7 @@
           text        = ''cmd[update:1000] echo "$(hyprlock-song-details)"'';
           color       = "rgba(255, 255, 255, 0.6)";
           font_size   = 18;
-          font_family = "Maple Mono Bold";
+          font_family = "Maple Mono NF CN";
           position    = "0, 100";
           halign      = "center";
           valign      = "bottom";

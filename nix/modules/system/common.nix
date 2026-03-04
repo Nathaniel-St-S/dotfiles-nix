@@ -1,8 +1,47 @@
-  { pkgs, inputs, config, username, ... }: {
+{ pkgs, inputs, config, username, ... }: {
 
   # Bootloader
-  boot.loader.systemd-boot.enable      = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      # Hide the OS choice for bootloaders.
+      # It's still possible to open the bootloader list by pressing any key
+      # It will just not appear on screen unless a key is pressed
+      timeout = 0;
+    };
+
+    # plymouth themes to use
+    #   angular_alt
+    #   colorful
+    #   cuts
+    #   lone
+    #   loader_2
+    #   loader_alt
+    #   rings
+    plymouth = {
+      enable = true;
+      theme = "lone";
+      themePackages = with pkgs; [
+        # By default we would install all themes
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [ "lone" ];
+        })
+      ];
+    };
+
+    # Use latest kernel image
+    kernelPackages = pkgs.linuxPackages_latest;
+
+    # Enable "Silent boot"
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "udev.log_level=3"
+      "systemd.show_status=auto"
+    ];
+  };
 
   time.timeZone      = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -26,6 +65,7 @@
   # NUR and Lix
   nixpkgs.overlays = [
     inputs.nur.overlays.default
+    inputs.niri.overlays.niri
     (final: prev: {
      inherit (prev.lixPackageSets.latest) nixpkgs-review nix-eval-jobs nix-fast-build colmena;
      })
@@ -36,35 +76,34 @@
   nix.package = pkgs.lixPackageSets.latest.lix;
   environment.systemPackages = with pkgs; [
     #Core Utils
-    gnumake
-
-    # Compression tools
-    zip unzip p7zip xz pigz
+    gnumake pciutils
 
     # Nice to haves
-    nix-output-monitor nvd
+    sioyek loupe
 
-    # For fun
-    spotify
+    # Compression tools
+    zip unzip
 
     # Programming languages
     zig typst rustc cargo
-    clippy rustfmt go
-    nodejs_24 python315
+    clippy rustfmt racket
+    python315
 
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
   # Sync local spotify tracks with phones and other devices on my network
   networking.firewall.allowedTCPPorts = [ 57621 ];
   # Enable spotify to be discovered by other devices
-  networking.firewall.allowedUDPPorts = [ 5353 ];
+  # networking.firewall.allowedUDPPorts = [ 5353 ];
+
+  programs.dconf.enable = true;
 
   programs.nh = {
     enable = true;
     flake = "${config.users.users.${username}.home}/dotfiles";
     clean = {
       enable = true;
-      extraArgs = "--keep-since 4d --keep 3";
+      extraArgs = "--keep-since 7d --keep 3";
     };
   };
 
@@ -109,8 +148,6 @@
     powerOnBoot = true;
   };
   services.blueman.enable = true;
-
-  programs.niri.enable = true;
 
   services.displayManager.ly = {
     enable = true;
@@ -187,6 +224,8 @@
   # Tailscale
   services.tailscale.enable = true;
 
+  services.displayManager.sessionPackages = [ pkgs.niri-unstable ];
+
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
@@ -214,6 +253,7 @@
   xdg.portal = {
     enable       = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = "*";
   };
 
   # Polkit
@@ -222,11 +262,13 @@
   nix.settings = {
     substituters = [
       "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
+      "https://nix-community.cachix.org"
+      "https://niri.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
     ];
 
     experimental-features = ["nix-command" "flakes"];
@@ -234,6 +276,10 @@
 
     max-jobs = "auto";
     cores = 0;
+
+    narinfo-cache-negative-ttl = 3600;
+
+    connect-timeout = 5;
   };
 
   system.stateVersion = "25.11";

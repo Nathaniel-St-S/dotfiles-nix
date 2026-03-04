@@ -1,4 +1,4 @@
-{ ... }:{
+{ pkgs, username, ... }:{
   programs.neovim.initLua = /* lua */ ''
     -- ────────────────────────────────────────────────────────────────────────
     -- Colorscheme
@@ -102,22 +102,6 @@
     end, { desc = "Reload LuaSnip snippets" })
     
     -- ────────────────────────────────────────────────────────────────────────
-    -- Mason
-    -- ────────────────────────────────────────────────────────────────────────
-    require("mason").setup({
-      ui = {
-        border = "rounded",
-        icons  = {
-          package_installed   = "●",
-          package_pending     = "○",
-          package_uninstalled = "○",
-        },
-      },
-    })
-    
-    require("mason-lspconfig").setup()
-    
-    -- ────────────────────────────────────────────────────────────────────────
     -- nvim-lspconfig
     -- ────────────────────────────────────────────────────────────────────────
     local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -131,15 +115,36 @@
             library = vim.api.nvim_get_runtime_file("", true),
           },
         },
+        nixd = {
+          nixpkgs = {
+            expr = [[
+              let
+                flake = builtins.getFlake "path:/home/${username}/dotfiles";
+              in
+                flake.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}
+            ]],
+          },
+          options = {
+            nixos = {
+              expr = [[
+                (builtins.getFlake "path:/home/${username}/dotfiles").nixosConfigurations.nixos.options
+              ]],
+            },
+            ["home-manager"] = {
+              expr = [[
+                (builtins.getFlake "path:/home/${username}/dotfiles").nixosConfigurations.nixos.options.home-manager.users.type.getSubOptions []
+              ]],
+            },
+          },
+        },
       },
     })
-    
+
     local nix_managed_servers = {
       "lua_ls",
-      "nil_ls",
+      "nixd",
       "bashls",
       "clangd",
-      "gopls",
       "pyright",
       "rust_analyzer",
       "zls",
@@ -148,17 +153,33 @@
       "html",
       "cssls",
       "jsonls",
-      "tailwindcss",
       "emmet_language_server",
-      "jdtls",
       "tinymist",
       "racket_langserver",
     }
-    
+
     for _, server in ipairs(nix_managed_servers) do
       vim.lsp.enable(server)
     end
-    
+
+    -- ────────────────────────────────────────────────────────────────────────
+    -- lsp blocks
+    -- ────────────────────────────────────────────────────────────────────────
+    require("otter").setup({
+      buffers = {
+        set_filetype = true,
+        write_to_disk = false,
+      },
+      handle_leading_whitespace = true,
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "nix", "markdown" },
+      callback = function()
+        require("otter").activate({ "lua", "bash", "python", "html", "css", "nix", }, true, true)
+      end,
+    })
+
     -- ────────────────────────────────────────────────────────────────────────
     -- Treesitter
     -- ────────────────────────────────────────────────────────────────────────
@@ -236,16 +257,20 @@
     -- ────────────────────────────────────────────────────────────────────────
     -- Gitsigns
     -- ────────────────────────────────────────────────────────────────────────
-    require("gitsigns").setup()
+    require("gitsigns").setup({
+      on_attach = function(_)
+        vim.cmd("redrawstatus")
+      end,
+    })
     
     -- ────────────────────────────────────────────────────────────────────────
     -- nvim-colorizer
     -- ────────────────────────────────────────────────────────────────────────
     require("colorizer").setup({
       filetypes = {
-        "html", "json", "kdl", "css", "scss", "toml", "yaml",
+        "html", "json", "kdl", "css", "scss", "toml", "yaml", "nix",
         "sass", "less", "typescript", "javascript", "lua", "zig",
-        "rust", "c", "go", "bash", "sh", "zsh", "nu", "text", "conf",
+        "rust", "c", "go", "bash", "sh", "zsh", "nu", "text", "conf"
       },
       user_default_options = {
         RGB      = true,  RRGGBB   = true, names    = false,

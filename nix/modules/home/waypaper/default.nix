@@ -1,99 +1,68 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 let
-  generate-colors = pkgs.writeShellScriptBin "generate-colors" /* bash */ ''
-    log=/tmp/waypaper-post.log
-    echo "POST-COMMAND CALLED at $(date)"         >> "$log"
-    echo "Argument received: '$1'"                >> "$log"
+  generate-colors = pkgs.writeShellApplication {
+    name = "generate-colors";
+    runtimeInputs = with pkgs; [
+      coreutils
+      swww
+      pywal
+    ];
+    text = /* bash */ ''
+      log=/tmp/waypaper-post.log
+      exec >> "$log" 2>&1
+      echo "POST-COMMAND CALLED at $(date)"
+      echo "Argument received: ''${1:-}'"
 
-    # Waypaper doesn't reliably pass the wallpaper as $1 — read from config.
-    WALLPAPER=$(grep "^wallpaper = " "''${XDG_CONFIG_HOME:-$HOME/.config}/waypaper/config.ini" | cut -d' ' -f3)
-    WALLPAPER="''${WALLPAPER/#\~/$HOME}"
-    echo "Using wallpaper from config: $WALLPAPER" >> "$log"
+      # Waypaper doesn't reliably pass the wallpaper as $1 — read from config.
+      WALLPAPER=$(grep "^wallpaper = " "''${XDG_CONFIG_HOME:-$HOME/.config}/waypaper/config.ini" | cut -d' ' -f3)
+      WALLPAPER="''${WALLPAPER/#\~/$HOME}"
+      echo "Using wallpaper from config: $WALLPAPER"
 
-    if [ ! -f "$WALLPAPER" ]; then
-        echo "ERROR: Wallpaper file not found: $WALLPAPER" >> "$log"
-        exit 1
-    fi
+      if [ ! -f "$WALLPAPER" ]; then
+          echo "ERROR: Wallpaper file not found: $WALLPAPER"
+          exit 1
+      fi
 
-    # ── Pywal ────────────────────────────────────────────────────────────────
-    echo "Running pywal..." >> "$log"
-    wal -i "$WALLPAPER" -n -q
-    ln -sf "$(cat "''${XDG_CACHE_HOME:-$HOME/.cache}/wal/wal")" "''${XDG_CACHE_HOME:-$HOME/.cache}/current-wallpaper"
+      # ── Pywal ────────────────────────────────────────────────────────────────
+      echo "Running pywal..."
+      wal -i "$WALLPAPER" -n -q
+      ln -sf "$(cat "''${XDG_CACHE_HOME:-$HOME/.cache}/wal/wal")" "''${XDG_CACHE_HOME:-$HOME/.cache}/current-wallpaper"
 
-    echo "Generating waybar colors..."  >> "$log"
-    waybar-generate-colors
+      echo "Generating waybar colors..."
+      waybar-generate-colors
 
-    echo "Generating rofi colors..."    >> "$log"
-    rofi-generate-colors
+      echo "Generating rofi colors..."
+      rofi-generate-colors
 
-    echo "Reloading niri colors..."     >> "$log"
-    niri-generate-colors
+      echo "Reloading niri colors..."
+      niri-generate-colors
 
-    echo "Updating btop colors..."      >> "$log"
-    btop-generate-colors
+      echo "Updating btop colors..."
+      btop-generate-colors
 
-    echo "Reloading swaync..."          >> "$log"
-    swaync-generate-colors
-    swaync-client --reload-config
-    swaync-client --reload-css
+      echo "Reloading swaync..."
+      swaync-generate-colors
+      swaync-client --reload-config
+      swaync-client --reload-css
 
-    echo "Restarting waybar..."         >> "$log"
-    pkill waybar
-    waybar & disown
+      if pgrep waybar > /dev/null; then
+        echo "Restarting waybar..."
+        pkill waybar
+        waybar & disown
+      else
+        echo "Waybar not running, skipping restart"
+      fi
 
-    echo "POST-COMMAND FINISHED at $(date)" >> "$log"
-    echo "---"                              >> "$log"
-  '';
-
-  backgroundsPath = "${inputs.backgrounds}";
-  random-wallpaper = pkgs.writeShellScriptBin "random-wallpaper" /* bash */ ''
-    WALLPAPER=$(find "${backgroundsPath}" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) | shuf -n1)
-
-    if [ -z "$WALLPAPER" ]; then
-      echo "random-wallpaper: no wallpaper found in ${backgroundsPath}" >&2
-      exit 1
-    fi
-
-    # Update waypaper config so generate-colors picks it up
-    CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/waypaper/config.ini"
-    mkdir -p "$(dirname "$CONFIG")"
-    if [ -f "$CONFIG" ]; then
-      sed -i "s|^wallpaper = .*|wallpaper = $WALLPAPER|" "$CONFIG"
-    else
-      printf '[Settings]\nwallpaper = %s\n' "$WALLPAPER" > "$CONFIG"
-    fi
-
-    # Set the wallpaper
-    swww img "$WALLPAPER" --transition-type fade --transition-duration 1
-
-    # Regenerate the colorscheme and reload everything
-    generate-colors
-  '';
+      echo "POST-COMMAND FINISHED at $(date)"
+      echo "---"
+    '';
+  };
 
 in
 {
   home.packages = with pkgs; [
     waypaper
     generate-colors
-    random-wallpaper
   ];
-
-  systemd.user.services.random-wallpaper = {
-    Unit = {
-      Description    = "Set a random wallpaper and regenerate colorscheme";
-      After          = [ "graphical-session.target" ];
-      PartOf         = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type            = "oneshot";
-      ExecStartPre    = "${pkgs.coreutils}/bin/sleep 2"; # give swww-daemon time to start
-      ExecStart       = "${random-wallpaper}/bin/random-wallpaper";
-      RemainAfterExit = false;
-    };
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-  };
 }
-

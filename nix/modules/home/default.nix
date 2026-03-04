@@ -4,19 +4,10 @@ let
   homePrefix = if pkgs.stdenv.isDarwin then "/Users" else "/home";
 in {
 
-  imports = autoImport { path = ./.; exclude = [ ./kitty ./tmux ]; };
+  imports = autoImport { path = ./.;  exclude = [ ./tmux ./kitty ]; };
 
   programs.home-manager.enable = true;
 
-  programs.zoxide = {
-    enable                   = true;
-    enableNushellIntegration = true;
-    enableZshIntegration     = true;
-    enableBashIntegration    = true;
-    options                  = [ "--cmd cd" ];
-  };
-
-  # Home
   home = {
     inherit username;
     homeDirectory = "${homePrefix}/${username}";
@@ -79,36 +70,6 @@ in {
 
       # Browsers
       BROWSER = "zen-beta";
-    };
-  };
-
-  # XDG
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable            = true;
-      createDirectories = true;
-    };
-  };
-  
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "text/html"                      = "zen-beta.desktop";
-      "x-scheme-handler/http"          = "zen-beta.desktop";
-      "x-scheme-handler/https"         = "zen-beta.desktop";
-      "x-scheme-handler/ftp"           = "zen-beta.desktop";
-      "application/xhtml+xml"          = "zen-beta.desktop";
-      "application/x-extension-htm"    = "zen-beta.desktop";
-      "application/x-extension-html"   = "zen-beta.desktop";
-      "application/x-extension-xhtml"  = "zen-beta.desktop";
-      "application/x-extension-xht"    = "zen-beta.desktop";
-      # Images
-      "image/jpeg"                     = "zen-beta.desktop";
-      "image/png"                      = "zen-beta.desktop";
-      "image/gif"                      = "zen-beta.desktop";
-      "image/webp"                     = "zen-beta.desktop";
-      "image/bmp"                      = "zen-beta.desktop";
     };
   };
 }

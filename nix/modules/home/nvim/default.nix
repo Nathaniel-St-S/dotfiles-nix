@@ -35,6 +35,7 @@ in
       nvim-lspconfig
       mason-nvim
       mason-lspconfig-nvim
+      otter-nvim
 
       # Treesitter
       (nvim-treesitter.withPlugins (p: with p; [
@@ -61,32 +62,29 @@ in
       # Colorscheme
       pywal16-nvim
 
-      # Typst preview
+      # Previewers
       typst-preview-nvim
+      markdown-preview-nvim
     ];
 
     # ── System tools exposed to neovim ────────────────────────────────────────
     extraPackages = with pkgs; [
       # LSP servers
       lua-language-server
-      nil
+      nixd
       bash-language-server
       clang-tools
-      gopls
       pyright
       rust-analyzer
       zls
       marksman
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
-      tailwindcss-language-server
       emmet-language-server
-      jdt-language-server
       racket
       typst
       tinymist
 
-      # Telescope / general
       tree-sitter
       graphviz
       ripgrep

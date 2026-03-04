@@ -1,5 +1,7 @@
 { ... }:{
   programs.neovim.initLua = /* lua */ ''
+    vim.g.mapleader      = " "
+    vim.g.maplocalleader = " "
     -- Floating terminal
     -- terminal
     local terminal_state = {

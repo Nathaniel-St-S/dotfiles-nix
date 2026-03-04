@@ -16,6 +16,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,29 +37,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     secrets = {
-      url = "git+ssh://git@codeberg.org/Nathaniel-St-S/secrets?ref=master";
+      url = "git+ssh://git@codeberg.org/Nathaniel-St-S/secrets?ref=master&shallow=1";
       flake = false;
     };
 
     backgrounds = {
-      url = "git+ssh://git@github.com/Nathaniel-St-S/backgrounds?ref=master";
+      url = "git+ssh://git@github.com/Nathaniel-St-S/backgrounds?ref=master&shallow=1";
       flake = false;
     };
   };
 
   outputs = { 
-    nixpkgs, nur, home-manager,
-    zen-browser, firefox-addons, 
-    impermanence, agenix, secrets, 
-    backgrounds, ... } @ inputs:
+    nixpkgs, home-manager, ... } @ inputs:
     let
-      mkHost = import ./nix/lib/mkHost.nix { inherit inputs nixpkgs nur home-manager; };
+      mkHost = import ./nix/lib/mkHost.nix { inherit inputs nixpkgs home-manager; };
     in
     {
       nixosConfigurations = {

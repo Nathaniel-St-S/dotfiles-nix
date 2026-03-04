@@ -1,11 +1,6 @@
 { ... }:
 let
   init-content = /* zsh */ ''
-    # Enable Powerlevel10k instant prompt
-    if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-      source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-    fi
-
     # Keybinds
     ## Setting up vi mode
     bindkey -v
@@ -63,17 +58,11 @@ let
     bindkey '^f' forward-char
     bindkey '^b' backward-char
 
-    # Zoxide init
-    eval "$(fzf --zsh)"
-    eval "$(zoxide init --cmd cd zsh --hook prompt)"
-
     # ~ls everytime the working directory changes
     chpwd_functions=(''${chpwd_functions[@]} "list_all")
 
     # Custom prompt or other zsh configurations
     setopt PROMPT_SUBST
-
-    # Custom functions
 
     # Searches for text in all files in the current folder
     ftext() {
@@ -104,13 +93,11 @@ let
       done
     }
 
-    # Git commit with message
     gcom() {
       git add .
       git commit -m "$1"
     }
 
-    # Git add, commit, and push
     lazyg() {
       git add .
       git commit -m "$1"
@@ -209,9 +196,6 @@ let
       emulate -L zsh
       ls -aFh --color=always --group-directories-first
     }
-
-    # Load Powerlevel10k configuration
-    [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
   '';
 in
