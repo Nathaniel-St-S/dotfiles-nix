@@ -201,12 +201,12 @@
 
     # SEARCH RUNNING PROCESSES
     def p [pattern: string] {
-      PS | GREP -I $pattern
+      ls | grep -I $pattern
     }
 
     # SEARCH FILES IN THE CURRENT DIRECTORY
     def f [pattern: string] {
-      LS **/* | where name =~ ('(?I)' + $pattern)
+      ls **/* | where name =~ ('(?I)' + $pattern)
     }
   '';
 }

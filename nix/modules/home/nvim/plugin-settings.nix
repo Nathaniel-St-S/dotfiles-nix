@@ -102,22 +102,6 @@
     end, { desc = "Reload LuaSnip snippets" })
     
     -- ────────────────────────────────────────────────────────────────────────
-    -- Mason
-    -- ────────────────────────────────────────────────────────────────────────
-    require("mason").setup({
-      ui = {
-        border = "rounded",
-        icons  = {
-          package_installed   = "●",
-          package_pending     = "○",
-          package_uninstalled = "○",
-        },
-      },
-    })
-    
-    require("mason-lspconfig").setup()
-    
-    -- ────────────────────────────────────────────────────────────────────────
     -- nvim-lspconfig
     -- ────────────────────────────────────────────────────────────────────────
     local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -139,7 +123,6 @@
       "nil_ls",
       "bashls",
       "clangd",
-      "gopls",
       "pyright",
       "rust_analyzer",
       "zls",
@@ -148,9 +131,7 @@
       "html",
       "cssls",
       "jsonls",
-      "tailwindcss",
       "emmet_language_server",
-      "jdtls",
       "tinymist",
       "racket_langserver",
     }
@@ -236,16 +217,20 @@
     -- ────────────────────────────────────────────────────────────────────────
     -- Gitsigns
     -- ────────────────────────────────────────────────────────────────────────
-    require("gitsigns").setup()
+    require("gitsigns").setup({
+      on_attach = function(_)
+        vim.cmd("redrawstatus")
+      end,
+    })
     
     -- ────────────────────────────────────────────────────────────────────────
     -- nvim-colorizer
     -- ────────────────────────────────────────────────────────────────────────
     require("colorizer").setup({
       filetypes = {
-        "html", "json", "kdl", "css", "scss", "toml", "yaml",
+        "html", "json", "kdl", "css", "scss", "toml", "yaml", "nix",
         "sass", "less", "typescript", "javascript", "lua", "zig",
-        "rust", "c", "go", "bash", "sh", "zsh", "nu", "text", "conf",
+        "rust", "c", "go", "bash", "sh", "zsh", "nu", "text", "conf"
       },
       user_default_options = {
         RGB      = true,  RRGGBB   = true, names    = false,

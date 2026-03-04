@@ -1,11 +1,6 @@
 { ... }:
 let
   init-content = /* zsh */ ''
-    # Enable Powerlevel10k instant prompt
-    if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-      source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-    fi
-
     # Keybinds
     ## Setting up vi mode
     bindkey -v
@@ -209,9 +204,6 @@ let
       emulate -L zsh
       ls -aFh --color=always --group-directories-first
     }
-
-    # Load Powerlevel10k configuration
-    [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
   '';
 in

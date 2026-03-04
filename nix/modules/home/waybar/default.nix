@@ -31,7 +31,6 @@ in
   home.packages = with pkgs; [
     waybar-generate-colors
     sshs
-    impala
     bluetui
     wiremix
     calcurse
@@ -218,7 +217,7 @@ in
         "tooltip-format-ethernet" = "  {ifname} ({ipaddr}/{cidr})";
         "tooltip-format-disconnected" = "Disconnected";
         "max-length"             = 50;
-        "on-click"               = "ghostty --class=popup.term -e impala || nm-connection-editor || nmtui";
+        "on-click"               = "ghostty --class=popup.term -e nmtui";
       };
 
       # ── Battery ──────────────────────────────────────────────────────────────
@@ -252,7 +251,7 @@ in
           car         = " ";
           default     = ["" " " " "];
         };
-        "on-click" = "ghostty --class=popup.term -e wiremix || pavucontrol || pwvucontrol";
+        "on-click" = "ghostty --class=popup.term -e wiremix";
       };
 
       # ── Bluetooth ────────────────────────────────────────────────────────────

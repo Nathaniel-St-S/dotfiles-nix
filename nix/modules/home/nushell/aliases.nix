@@ -38,7 +38,7 @@
     switch    = "nh os switch";
     test      = "nh os test";
     rollback  = "nh os rollback";
-    gcollect  = "nh clean all";
+    gcollect  = "nh clean all --keep-since 7d --keep 3";
     gcollectd = "nh clean all --nogcroots";
     flakeup   = "sudo nix flake update";
     optimize  = "sudo nix-store --optimize";
@@ -67,7 +67,7 @@
     gp  = "git push";
     gu  = "git pull";
     gl  = ''^git log --graph --date=format:"%d/%m/%y" --pretty=format:"%C(yellow)%h%Creset %C(white)%ad%Creset %C(bold)%s %C(bold green)%D%Creset%n"'';
-    gb  = "git brach";
+    gb  = "git branch";
     gi  = "git init";
     gw  = "git switch";
     go  = "git checkout";

@@ -47,7 +47,6 @@
     map("n", "<C-l>", ":wincmd l<CR>", options) -- Navigate Split Right
     
     -- LSP
-    map("n", "<leader>M", ":Mason<CR>", options)
     map("n", "<leader>I", ":LspInfo<CR>", options)
     map("n", "<leader>f", ":lua vim.lsp.buf.format({ async = true })<CR>", options)
     map("n", "<leader>o", ":lua vim.diagnostic.open_float()<CR>", options)

@@ -26,6 +26,7 @@
   # NUR and Lix
   nixpkgs.overlays = [
     inputs.nur.overlays.default
+    inputs.niri.overlays.niri
     (final: prev: {
      inherit (prev.lixPackageSets.latest) nixpkgs-review nix-eval-jobs nix-fast-build colmena;
      })
@@ -39,32 +40,31 @@
     gnumake
 
     # Compression tools
-    zip unzip p7zip xz pigz
-
-    # Nice to haves
-    nix-output-monitor nvd
+    zip unzip
 
     # For fun
     spotify
 
     # Programming languages
     zig typst rustc cargo
-    clippy rustfmt go
-    nodejs_24 python315
+    clippy rustfmt
+    python315
 
     inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
   # Sync local spotify tracks with phones and other devices on my network
   networking.firewall.allowedTCPPorts = [ 57621 ];
   # Enable spotify to be discovered by other devices
-  networking.firewall.allowedUDPPorts = [ 5353 ];
+  # networking.firewall.allowedUDPPorts = [ 5353 ];
+
+  programs.dconf.enable = true;
 
   programs.nh = {
     enable = true;
     flake = "${config.users.users.${username}.home}/dotfiles";
     clean = {
       enable = true;
-      extraArgs = "--keep-since 4d --keep 3";
+      extraArgs = "--keep-since 7d --keep 3";
     };
   };
 
@@ -109,8 +109,6 @@
     powerOnBoot = true;
   };
   services.blueman.enable = true;
-
-  programs.niri.enable = true;
 
   services.displayManager.ly = {
     enable = true;
@@ -187,6 +185,8 @@
   # Tailscale
   services.tailscale.enable = true;
 
+  services.displayManager.sessionPackages = [ pkgs.niri-unstable ];
+
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
@@ -214,6 +214,7 @@
   xdg.portal = {
     enable       = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = "*";
   };
 
   # Polkit
@@ -222,11 +223,13 @@
   nix.settings = {
     substituters = [
       "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
+      "https://nix-community.cachix.org"
+      "https://niri.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
     ];
 
     experimental-features = ["nix-command" "flakes"];
@@ -234,6 +237,10 @@
 
     max-jobs = "auto";
     cores = 0;
+
+    narinfo-cache-negative-ttl = 3600;
+
+    connect-timeout = 5;
   };
 
   system.stateVersion = "25.11";

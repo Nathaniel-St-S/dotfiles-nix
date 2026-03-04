@@ -26,6 +26,9 @@
       custom-shader = "cursor_smear.glsl";
 
       config-file = "${config.home.homeDirectory}/.cache/wal/colors-ghostty";
+
+      # Keynbinds
+      keybind = "ctrl+enter=unbind";
     };
   };
 }

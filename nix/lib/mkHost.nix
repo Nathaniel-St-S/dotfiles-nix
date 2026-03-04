@@ -1,4 +1,4 @@
-{ inputs, nixpkgs, nur, home-manager }:
+{ inputs, nixpkgs, nur, home-manager, niri}:
 
 { hostname, isLaptop ? true, username ? "nathaniels" }:
 
@@ -31,6 +31,7 @@ nixpkgs.lib.nixosSystem {
         useUserPackages  = true;
         extraSpecialArgs = { inherit inputs username autoImport; };
         backupFileExtension = "hm-backup";
+        sharedModules = [ inputs.niri.homeModules.niri ];
         users.${username} = import ../modules/home;
       };
     }

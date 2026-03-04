@@ -1,22 +1,6 @@
 # css
 ''
   @import 'colors-waybar.css';
-  /* @define-color backgroundlight */
-  /* @define-color backgrounddark */
-  /* @define-color backgrounddim  */
-  /* @define-color workspacesbackground1  */
-  /* @define-color workspacesbackground2  */
-  /* @define-color workspacesbackground3  */
-  /* @define-color on_primary_container  */
-  /* @define-color primary_container  */
-  /* @define-color bordercolor  */
-  /* @define-color on_surface  */
-  /* @define-color textcolor1  */
-  /* @define-color textcolor2  */
-  /* @define-color textcolor3  */
-  /* @define-color iconcolor  */
-  /* @define-clor canvas */
-  
   /* -----------------------------------------------------
    * General
    * ----------------------------------------------------- */
@@ -32,12 +16,7 @@
    * ----------------------------------------------------- */
   
   window#waybar {
-      /* background: rgba(0,0,0,1); */
       background: @canvas;
-      /* background-color: transparent; */
-      /*border-bottom: 0px solid #ffffff;*/
-      /*border-radius: 1rem;*/
-      /* color: #FFFFFF; */
       transition-property: background-color;
       transition-duration: .5s;
   }
@@ -51,14 +30,10 @@
    * ----------------------------------------------------- */
   
   #workspaces {
-      /*background: @workspacesbackground1;*/
-      /*margin: 5px 0px 5px 10px;*/
       padding: 0px 2px 0px 2px;
-      /* border-radius: 5px 5px 5px 5px; */
       border-radius: 30px;
       font-weight: bold;
       font-style: normal;
-      /* color: @on_surface; */
       color: transparent;
   }
   
@@ -67,7 +42,6 @@
       margin: 3px 2px;
       min-width: 2px;
       min-height: 2px;
-      /* border-radius: 3px 3px 3px 3px; */
       border-radius: 10px;
       border: none;
       outline: none;
@@ -82,19 +56,15 @@
       background: @workspacesbackground3;
       color: transparent;
       border-radius: 18px;
-      /* border-radius: 3px 3px 3px 3px; */
       min-width: 45px;
       transition: all 0.5s ease-in-out;
-      /* transition: all 0.1s linear; */
   }
   
   #workspaces button:hover {
-      /* color: @on_primary_container; */
       background: @workspacesbackground3;
       color: transparent;
       border-radius: 10px;
       text-shadow: none;
-      /* border-radius: 5px 5px 5px 5px; */
   }
   
   /* -----------------------------------------------------
@@ -107,7 +77,6 @@
       color: @textcolor1;
       border-radius: 15px;
       padding: 2px 10px 0px 10px;
-      /* margin: 5px 0px 5px 10px; */
   }
   
   /* -----------------------------------------------------
@@ -211,19 +180,16 @@
    * ----------------------------------------------------- */
   
   #clock {
-      /*background-color: @backgrounddark;*/
       background: transparent;
       font-size: 12px;
       color: @textcolor3;
       border-radius: 15px;
       padding: 2px 10px 0px 10px;
-      /*margin: 5px 10px 5px 10px;*/
   }
   
-  /* Simple Hover effect for clock module - BRIGHTER COLOR */
   #clock:hover {
     color: @textcolor2;
-    background-color: @backgrounddark; /* Brighter highlight */
+    background-color: @backgrounddark;
   }
   
   /* -----------------------------------------------------
@@ -249,7 +215,6 @@
       color: @textcolor3;
       border-radius: 15px;
       padding: 2px 10px 0px 10px;
-      /*margin: 5px 15px 5px 0px;*/
   }
   
   #pulseaudio.muted {
@@ -267,7 +232,6 @@
       color: @textcolor3;
       border-radius: 15px;
       padding: 2px 10px 2px 15px;
-      /*margin: 5px 10px 5px 0px;*/
   }
   
   #network.ethernet {
@@ -290,7 +254,6 @@
       color: @textcolor3;
       border-radius: 15px;
       padding: 2px 10px 0px 10px;
-      /*margin: 5px 15px 5px 0px;*/
   }
   
   #bluetooth.off {
@@ -309,7 +272,6 @@
       color: @textcolor3;
       border-radius: 15px;
       padding: 2px 15px 0px 10px;
-      /*margin: 5px 15px 5px 0px;*/
   }
   
   #battery.charging, #battery.plugged {
@@ -359,7 +321,6 @@
       font-family: "JetBrains Mono Nerd Font";
       font-size: 12px;
       color: @textcolor3;
-      /*margin: 0px 10px 0px 0px;*/
   }
   
   /* -----------------------------------------------------

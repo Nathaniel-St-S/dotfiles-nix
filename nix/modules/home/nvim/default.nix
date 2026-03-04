@@ -72,21 +72,17 @@ in
       nil
       bash-language-server
       clang-tools
-      gopls
       pyright
       rust-analyzer
       zls
       marksman
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
-      tailwindcss-language-server
       emmet-language-server
-      jdt-language-server
       racket
       typst
       tinymist
 
-      # Telescope / general
       tree-sitter
       graphviz
       ripgrep
