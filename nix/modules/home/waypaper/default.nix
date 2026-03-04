@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   generate-colors = pkgs.writeShellScriptBin "generate-colors" ''
@@ -46,11 +46,54 @@ let
     echo "---"                              >> "$log"
   '';
 
+  backgroundsPath = "${inputs.backgrounds}";
+  random-wallpaper = pkgs.writeShellScriptBin "random-wallpaper" ''
+    WALLPAPER=$(find "${backgroundsPath}" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) | shuf -n1)
+
+    if [ -z "$WALLPAPER" ]; then
+      echo "random-wallpaper: no wallpaper found in ${backgroundsPath}" >&2
+      exit 1
+    fi
+
+    # Update waypaper config so generate-colors picks it up
+    CONFIG="''${XDG_CONFIG_HOME:-$HOME/.config}/waypaper/config.ini"
+    mkdir -p "$(dirname "$CONFIG")"
+    if [ -f "$CONFIG" ]; then
+      sed -i "s|^wallpaper = .*|wallpaper = $WALLPAPER|" "$CONFIG"
+    else
+      printf '[Settings]\nwallpaper = %s\n' "$WALLPAPER" > "$CONFIG"
+    fi
+
+    # Set the wallpaper
+    swww img "$WALLPAPER" --transition-type fade --transition-duration 1
+
+    # Regenerate the colorscheme and reload everything
+    generate-colors
+  '';
+
 in
 {
   home.packages = with pkgs; [
     waypaper
     generate-colors
+    random-wallpaper
   ];
+
+  systemd.user.services.random-wallpaper = {
+    Unit = {
+      Description    = "Set a random wallpaper and regenerate colorscheme";
+      After          = [ "graphical-session.target" ];
+      PartOf         = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type            = "oneshot";
+      ExecStartPre    = "${pkgs.coreutils}/bin/sleep 2"; # give swww-daemon time to start
+      ExecStart       = "${random-wallpaper}/bin/random-wallpaper";
+      RemainAfterExit = false;
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
 }
 

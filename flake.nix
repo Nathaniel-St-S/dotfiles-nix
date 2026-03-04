@@ -36,13 +36,18 @@
       url = "git+ssh://git@codeberg.org/Nathaniel-St-S/secrets?ref=master";
       flake = false;
     };
+
+    backgrounds = {
+      url = "git+ssh://git@github.com/Nathaniel-St-S/backgrounds?ref=master";
+      flake = false;
+    };
   };
 
   outputs = { 
     nixpkgs, nur, home-manager,
     zen-browser, firefox-addons, 
     impermanence, agenix, secrets, 
-    ... } @ inputs:
+    backgrounds, ... } @ inputs:
     let
       mkHost = import ./nix/lib/mkHost.nix { inherit inputs nixpkgs nur home-manager; };
     in

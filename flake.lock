@@ -23,6 +23,23 @@
         "type": "github"
       }
     },
+    "backgrounds": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770148069,
+        "narHash": "sha256-8qdzm1T7uqTHk28Knd/AfhXoxuwvo4BYcrFDUuYAi9w=",
+        "ref": "master",
+        "rev": "f476015fdf71ebcc3b3ea4fc8ce6784f51d2df61",
+        "revCount": 16,
+        "type": "git",
+        "url": "ssh://git@github.com/Nathaniel-St-S/backgrounds"
+      },
+      "original": {
+        "ref": "master",
+        "type": "git",
+        "url": "ssh://git@github.com/Nathaniel-St-S/backgrounds"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -225,6 +242,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "backgrounds": "backgrounds",
         "firefox-addons": "firefox-addons",
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
