@@ -27,7 +27,7 @@ in
     enable = true;
 
     # ── env.nu ────────────────────────────────────────────────────────────────
-    extraEnv = ''
+    extraEnv = /* nu */ ''
       # ── Rust ────────────────────────────────────────────────────────────────
       $env.CARGO_HOME  = "${dataDir}/cargo"
       $env.RUSTUP_HOME = "${dataDir}/rustup"
@@ -86,7 +86,7 @@ in
     '';
 
     # ── config.nu ─────────────────────────────────────────────────────────────
-    extraConfig = ''
+    extraConfig = /* nu */ ''
       # ── Pywal colour restoration ─────────────────────────────────────────────
       if ("${cacheDir}/wal/sequences" | path exists) {
         cat "${cacheDir}/wal/sequences"

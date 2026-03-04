@@ -1,5 +1,5 @@
 { ... }:{
-  programs.nushell.extraConfig = ''
+  programs.nushell.extraConfig = /* nu */ ''
     $env.config.keybindings = ($env.config.keybindings | append [
       # Ctrl+F for forward char
       {

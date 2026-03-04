@@ -61,7 +61,7 @@ in
       vim-tmux-navigator
     ];
 
-    extraConfig = ''
+    extraConfig = /* bash */ ''
       # Send prefix with C-Space C-Space
       bind C-Space send-prefix
 

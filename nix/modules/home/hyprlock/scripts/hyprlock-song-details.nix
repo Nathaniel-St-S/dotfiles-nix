@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  hyprlock-song-details = pkgs.writeShellScriptBin "hyprlock-song-details" ''
+  hyprlock-song-details = pkgs.writeShellScriptBin "hyprlock-song-details" /* bash */ ''
     # Get current playing song from playerctl
     if command -v playerctl &> /dev/null; then
         # Check if any player is running

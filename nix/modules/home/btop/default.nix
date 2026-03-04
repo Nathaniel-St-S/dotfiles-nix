@@ -2,7 +2,7 @@
 
 let
   # Script to generate colors for btop
-  btop-generate-colors = pkgs.writeShellScriptBin "btop-generate-colors" ''
+  btop-generate-colors = pkgs.writeShellScriptBin "btop-generate-colors" /* bash */ ''
     source "$HOME/.cache/wal/colors.sh"
 
     mkdir -p "$HOME/.config/btop/themes"

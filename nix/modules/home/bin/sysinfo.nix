@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let 
-  sysinfo = pkgs.writeShellScriptBin "sysinfo" ''
+  sysinfo = pkgs.writeShellScriptBin "sysinfo" /* bash */ ''
     # Colors
     BOLD='\033[1m'
     CYAN='\033[0;36m'

@@ -1,7 +1,7 @@
 { ... }:
 
 let
-  cursor_smear = ''
+  cursor_smear = /* glsl */ ''
     // Cursor trail shader that creates a hexagonal trailing effect
     //
     // The effect works by:

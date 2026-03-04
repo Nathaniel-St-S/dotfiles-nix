@@ -1,7 +1,7 @@
 { pkgs, autoImport, ... }:
 
 let
-  waybar-generate-colors = pkgs.writeShellScriptBin "waybar-generate-colors" ''
+  waybar-generate-colors = pkgs.writeShellScriptBin "waybar-generate-colors" /* bash */ ''
     source "$HOME/.cache/wal/colors.sh"
 
     mkdir -p "''${XDG_CONFIG_HOME:-$HOME/.config}/waybar"

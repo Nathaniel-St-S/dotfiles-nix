@@ -1,5 +1,5 @@
 { ... }:{
-  programs.nushell.extraConfig = ''
+  programs.nushell.extraConfig = /* nu */ ''
     $env.PROMPT_COMMAND = {||
       let dir = (pwd | str replace $env.HOME "~")
       let git = (do -i { 

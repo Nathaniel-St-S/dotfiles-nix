@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  addmusic = pkgs.writeShellScriptBin "addmusic" ''
+  addmusic = pkgs.writeShellScriptBin "addmusic" /* bash */ ''
     # Music file management for Navidrome with smart track numbering
     # Usage: 
     #   Album:   ./add_music.sh --album "Artist" "Album" [YEAR] file1.flac file2.mp3 ...

@@ -10,7 +10,7 @@
   ];
 
   # ── GTK3 settings ───────────────────────
-  xdg.configFile."gtk-3.0/settings.ini".text = ''
+  xdg.configFile."gtk-3.0/settings.ini".text = /* ini */ ''
     [Settings]
     gtk-theme-name=Graphite-Dark
     gtk-icon-theme-name=Papirus-Dark
@@ -22,7 +22,7 @@
   '';
 
   # ── GTK4 settings ─────────────────────────────────────────────────────────
-  xdg.configFile."gtk-4.0/settings.ini".text = ''
+  xdg.configFile."gtk-4.0/settings.ini".text = /* ini */ ''
     [Settings]
     gtk-theme-name=Graphite-Dark
     gtk-icon-theme-name=Papirus-Dark

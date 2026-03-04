@@ -1,3 +1,4 @@
+# css
 ''
   @import 'colors-waybar.css';
   /* @define-color backgroundlight */

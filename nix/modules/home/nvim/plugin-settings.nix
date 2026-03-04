@@ -1,5 +1,5 @@
 { ... }:{
-  programs.neovim.initLua = ''
+  programs.neovim.initLua = /* lua */ ''
     -- ────────────────────────────────────────────────────────────────────────
     -- Colorscheme
     -- ────────────────────────────────────────────────────────────────────────
@@ -162,13 +162,20 @@
     -- ────────────────────────────────────────────────────────────────────────
     -- Treesitter
     -- ────────────────────────────────────────────────────────────────────────
-    require("nvim-treesitter").setup({
-      highlight = {
-        enable                            = true,
-        additional_vim_regex_highlighting = false,
-      },
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function(event)
+        local ok, _ = pcall(vim.treesitter.start, event.buf)
+        if not ok then return end
+
+        -- indentation via treesitter
+        vim.bo[event.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
+    })
+    vim.filetype.add({
+      extension = { rasi = "rasi" },
     })
     vim.treesitter.language.register("markdown", "mdx")
+    vim.treesitter.language.register("rasi", "rasi")
     
     -- treesitter-textobjects
     require("nvim-treesitter-textobjects").setup({

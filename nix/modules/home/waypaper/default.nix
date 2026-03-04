@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 
 let
-  generate-colors = pkgs.writeShellScriptBin "generate-colors" ''
+  generate-colors = pkgs.writeShellScriptBin "generate-colors" /* bash */ ''
     log=/tmp/waypaper-post.log
     echo "POST-COMMAND CALLED at $(date)"         >> "$log"
     echo "Argument received: '$1'"                >> "$log"
@@ -47,7 +47,7 @@ let
   '';
 
   backgroundsPath = "${inputs.backgrounds}";
-  random-wallpaper = pkgs.writeShellScriptBin "random-wallpaper" ''
+  random-wallpaper = pkgs.writeShellScriptBin "random-wallpaper" /* bash */ ''
     WALLPAPER=$(find "${backgroundsPath}" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) | shuf -n1)
 
     if [ -z "$WALLPAPER" ]; then

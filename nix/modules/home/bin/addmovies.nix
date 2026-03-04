@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let 
-  addmovies = pkgs.writeShellScriptBin "addmovies" ''
+  addmovies = pkgs.writeShellScriptBin "addmovies" /* bash */ ''
     # Multiple movie support with automatic subtitle detection
     # Usage: ./add_movie.sh "path/to/Movie.mkv" YEAR "path/to/Next_Movie.mp4" YEAR ...
     

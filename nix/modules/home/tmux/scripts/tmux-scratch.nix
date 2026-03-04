@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  tmux-scratch = pkgs.writeShellScriptBin "tmux-scratch" ''
+  tmux-scratch = pkgs.writeShellScriptBin "tmux-scratch" /* tmux */ ''
     # Define session name for scratchpad
     session="_popup_scratchpad"
 

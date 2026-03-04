@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  waybar-ssh-info = pkgs.writeShellScriptBin "waybar-ssh-info" ''
+  waybar-ssh-info = pkgs.writeShellScriptBin "waybar-ssh-info" /* bash */ ''
     # Find the SSH client process (not sshd server)
     ssh_process=$(ps aux | grep "[s]sh " | grep -v "sshd" | grep -v "ssh-agent" | tail -n 1)
 

@@ -1,5 +1,5 @@
 { ... }:{
-  programs.nushell.extraConfig = ''
+  programs.nushell.extraConfig = /* nu */ ''
     # Run nushell commands as sudo
     def nsudo [command: string] {
       sudo nu -c $command

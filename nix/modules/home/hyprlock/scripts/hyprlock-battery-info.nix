@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  hyprlock-battery-info = pkgs.writeShellScriptBin "hyprlock-battery-info" ''
+  hyprlock-battery-info = pkgs.writeShellScriptBin "hyprlock-battery-info" /* bash */ ''
     # Get the current battery percentage
     battery_percentage=$(cat /sys/class/power_supply/BAT0/capacity)
 

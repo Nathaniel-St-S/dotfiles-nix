@@ -52,7 +52,7 @@
     clippy rustfmt go
     nodejs_24 python315
 
-    inputs.agenix.packages.${pkgs.system}.default
+    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
   # Sync local spotify tracks with phones and other devices on my network
   networking.firewall.allowedTCPPorts = [ 57621 ];

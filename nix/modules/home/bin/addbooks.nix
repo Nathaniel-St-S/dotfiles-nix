@@ -1,7 +1,7 @@
 { pkgs, ... }: 
 
 let 
-  addbooks = pkgs.writeShellScriptBin "addbooks" ''
+  addbooks = pkgs.writeShellScriptBin "addbooks" /* bash */ ''
     # Book and comic management for Kavita with metadata reading
     # Usage:
     #   Books:  ./add_books.sh --book "Author Name" "Book Title" file.epub [more books...]

@@ -1,5 +1,5 @@
 { ... }:{
-  programs.neovim.initLua = ''
+  programs.neovim.initLua = /* lua */ ''
     -- General
     vim.opt.number = true                           -- Line numbers
     vim.opt.relativenumber = true                   -- Relative line numbers

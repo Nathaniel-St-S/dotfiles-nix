@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  tmux-menu = pkgs.writeShellScriptBin "tmux-menu" ''
+  tmux-menu = pkgs.writeShellScriptBin "tmux-menu" /* tmux */ ''
     {
       tmux list-sessions -F '#S' | grep -v '^_popup_' | while read -r session; do
         echo "SESSION:$session"

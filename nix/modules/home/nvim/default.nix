@@ -37,10 +37,10 @@ in
       mason-lspconfig-nvim
 
       # Treesitter
-      nvim-treesitter
       (nvim-treesitter.withPlugins (p: with p; [
         lua nix bash rust go c cpp python typescript javascript
         html css json yaml toml markdown typst racket zig nu
+        rasi glsl ini zsh tmux
       ]))
       nvim-treesitter-textobjects
 
