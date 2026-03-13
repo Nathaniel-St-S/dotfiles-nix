@@ -12,14 +12,16 @@ type Workspace = {
 }
 
 export default function Workspaces() {
-  // Poll niri's JSON IPC for workspace state.
+  print("Workspaces: init")
   const workspaces = createPoll<Workspace[]>([], 500, async () => {
     const out = await execAsync(["niri", "msg", "--json", "workspaces"])
     return JSON.parse(out) as Workspace[]
   })
+  print("Workspaces: poll created")
 
   const sorted = workspaces(wss => [...wss].sort((a, b) => a.idx - b.idx))
 
+  print("Workspaces: returning JSX")
   return (
     <box class="workspaces">
       <For each={sorted}>
@@ -30,7 +32,6 @@ export default function Workspaces() {
               execAsync(["niri", "msg", "action", "focus-workspace", String(ws.idx)])
             }
           >
-            {/* label is invisible — workspace buttons are styled as dots via CSS */}
             <label label="" />
           </button>
         )}

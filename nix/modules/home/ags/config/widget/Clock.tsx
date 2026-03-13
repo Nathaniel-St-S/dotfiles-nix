@@ -5,37 +5,28 @@ import Gdk from "gi://Gdk"
 import Gtk from "gi://Gtk"
 
 export default function Clock() {
+  print("Clock: init")
   const [extended, setExtended] = createState(false)
-
+  print("Clock: state created")
   const time = createPoll("", 1000, () => {
     const now = new Date()
     if (extended()) {
-      return now.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-        timeZoneName: "short",
-      })
+      return now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZoneName: "short" })
     }
-    return now.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    }) + "  "
+    return now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }) + "   "
   })
+  print("Clock: poll created")
 
-  // Right-click opens calcurse; left-click toggles the extended format
   function onRelease(_self: Gtk.Button, event: Gdk.Event) {
     if (event.get_event_type() === Gdk.EventType.BUTTON_RELEASE) {
       const button = (event as Gdk.ButtonEvent).get_button()
       if (button === 3) {
-        execAsync(["ghostty", "--class=popup.term", "-e", "calcurse"])
-          .catch(console.error)
+        execAsync(["ghostty", "--class=popup.term", "-e", "calcurse"]).catch(console.error)
       }
     }
   }
 
+  print("Clock: returning JSX")
   return (
     <button class="clock" onClicked={() => setExtended(v => !v)}>
       <label label={time} />

@@ -1,50 +1,38 @@
 import app from "ags/gtk4/app"
-import { readFile, monitorFile } from "ags/file"
+import { readFile } from "ags/file"
 import GLib from "gi://GLib"
 import Gdk from "gi://Gdk"
+
+print("importing widgets...")
 import Bar from "./widget/Bar"
-import style from "./style/bar.css"
-
-const walScss = `${GLib.get_home_dir()}/.cache/wal/colors.scss`
-
-// Parse pywal's colors.scss ($name: value;) into GTK @define-color directives.
-// GTK CSS does not support :root{} or var() — @define-color is the correct mechanism.
-function buildColorCss(): string {
-  try {
-    const lines = readFile(walScss).split("\n")
-    const defines: string[] = []
-
-    for (const line of lines) {
-      const match = line.match(/^\$([a-zA-Z0-9_]+):\s*([^;]+);/)
-      if (match) {
-        const [, name, value] = match
-        if (name === "wallpaper") continue
-        defines.push(`@define-color ${name} ${value.trim()};`)
-      }
-    }
-
-    return defines.join("\n")
-  } catch {
-    return ""
-  }
-}
-
-function loadStyles() {
-  app.reset_css()
-  app.apply_css(buildColorCss())
-  app.apply_css(style)
-}
+print("Bar ok")
 
 app.start({
   main() {
-    loadStyles()
-    monitorFile(walScss, loadStyles)
+    print("=== main() started ===")
 
-    // Create a bar for each connected monitor
-    const display = Gdk.Display.get_default()
-    const n = display ? display.get_n_monitors() : 1
-    for (let i = 0; i < n; i++) {
-      Bar(i)
+    // Load CSS so bar is actually visible
+    try {
+      app.reset_css()
+      app.apply_css("window.bar { background-color: #222; min-height: 32px; } label { color: white; font-size: 12px; }")
+      print("CSS: fallback applied")
+    } catch(e) {
+      print("CSS error:", e)
     }
+
+    const display = Gdk.Display.get_default()
+    const n = display ? display.get_monitors().get_n_items() : 1
+    print("Monitor count:", n)
+
+    for (let i = 0; i < n; i++) {
+      print("Calling Bar(" + i + ")")
+      try {
+        Bar(i)
+      } catch(e) {
+        print("Bar() threw:", e)
+      }
+    }
+
+    print("=== done ===")
   },
 })

@@ -3,32 +3,34 @@ import { createBinding, createComputed } from "ags"
 import { execAsync } from "ags/process"
 
 export default function NetworkWidget() {
+  print("Network: init")
   const network = Network.get_default()
+  print("Network: got default:", network)
   const primary = createBinding(network, "primary")
-  const wifi    = network.wifi   // may be null on desktop
-  const wired   = network.wired  // may be null on wifi-only devices
+  const wifi    = network.wifi
+  const wired   = network.wired
+  print("Network: bindings created")
 
   const icon = createComputed(() => {
     switch (primary()) {
-      case Network.Primary.WIFI:    return " "
-      case Network.Primary.WIRED:   return ""
-      default:                      return "Not Connected"
+      case Network.Primary.WIFI:   return "  "
+      case Network.Primary.WIRED:  return " "
+      default:                     return "Not Connected"
     }
   })
 
   const tooltip = createComputed(() => {
     switch (primary()) {
       case Network.Primary.WIFI:
-        return wifi
-          ? `  ${wifi.ssid ?? "Unknown"} (${wifi.strength}%)`
-          : "WiFi"
+        return wifi ? `   ${wifi.ssid ?? "Unknown"} (${wifi.strength}%)` : "WiFi"
       case Network.Primary.WIRED:
-        return wired ? `   ${wired.iface}` : "Ethernet"
+        return wired ? `  ${wired.iface}` : "Ethernet"
       default:
         return "Disconnected"
     }
   })
 
+  print("Network: returning JSX")
   return (
     <button
       class="network"

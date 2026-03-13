@@ -7,17 +7,18 @@ type SwayNCState = {
 }
 
 const ICONS: Record<string, string> = {
-  "notification":               "",
-  "none":                       "",
-  "dnd-notification":           "",
-  "dnd-none":                   "",
-  "inhibited-notification":     "",
-  "inhibited-none":             "",
-  "dnd-inhibited-notification": "",
-  "dnd-inhibited-none":         "",
+  "notification":               "",
+  "none":                       "",
+  "dnd-notification":           "",
+  "dnd-none":                   "",
+  "inhibited-notification":     "",
+  "inhibited-none":             "",
+  "dnd-inhibited-notification": "",
+  "dnd-inhibited-none":         "",
 }
 
 export default function Notifications() {
+  print("Notifications: init")
   const state = createPoll<SwayNCState>(
     { text: "", class: "none" },
     2000,
@@ -29,7 +30,9 @@ export default function Notifications() {
       }
     }
   )
+  print("Notifications: poll created")
 
+  print("Notifications: returning JSX")
   return (
     <button
       class="notifications"

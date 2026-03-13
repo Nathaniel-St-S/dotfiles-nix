@@ -11,13 +11,12 @@ type SshInfo = {
 }
 
 export default function Ssh() {
-  // Re-uses your existing waybar-ssh-check and waybar-ssh-info scripts directly
+  print("Ssh: init")
   const info = createPoll<SshInfo>(
     { connected: false, user: "", host: "", ip: "" },
     5000,
     () => {
       try {
-        // waybar-ssh-check exits 1 when no connection, prints JSON when connected
         exec(["waybar-ssh-check"])
         return {
           connected: true,
@@ -30,40 +29,40 @@ export default function Ssh() {
       }
     }
   )
-
+  print("Ssh: poll created")
   const connected = createComputed(() => info().connected)
-
-  function openSshs() {
-    execAsync(["ghostty", "--class=popup.term", "-e", "sshs", "--vim"]).catch(console.error)
-  }
+  print("Ssh: returning JSX")
 
   return (
     <box class="ssh" visible={connected}>
-
-      {/* Always-visible icon when any SSH session is active */}
-      <button class="ssh-icon" onClicked={openSshs}>
-        <label label="" />
+      <button class="ssh-icon" onClicked={() =>
+        execAsync(["ghostty", "--class=popup.term", "-e", "sshs", "--vim"]).catch(console.error)
+      }>
+        <label label="" />
       </button>
-
-      {/* Slides in the user / host / ip detail */}
       <Gtk.Revealer
         revealChild={connected}
         transitionType={Gtk.RevealerTransitionType.SLIDE_LEFT}
         transitionDuration={300}
       >
         <box>
-          <button class="ssh-item" onClicked={openSshs}>
-            <label label={info(i => `  ${i.user} / `)} />
+          <button class="ssh-item" onClicked={() =>
+            execAsync(["ghostty", "--class=popup.term", "-e", "sshs", "--vim"]).catch(console.error)
+          }>
+            <label label={info(i => ` ${i.user} / `)} />
           </button>
-          <button class="ssh-item" onClicked={openSshs}>
-            <label label={info(i => `  ${i.host} / `)} />
+          <button class="ssh-item" onClicked={() =>
+            execAsync(["ghostty", "--class=popup.term", "-e", "sshs", "--vim"]).catch(console.error)
+          }>
+            <label label={info(i => ` ${i.host} / `)} />
           </button>
-          <button class="ssh-item" onClicked={openSshs}>
-            <label label={info(i => ` ${i.ip}`)} />
+          <button class="ssh-item" onClicked={() =>
+            execAsync(["ghostty", "--class=popup.term", "-e", "sshs", "--vim"]).catch(console.error)
+          }>
+            <label label={info(i => ` ${i.ip}`)} />
           </button>
         </box>
       </Gtk.Revealer>
-
     </box>
   )
 }
