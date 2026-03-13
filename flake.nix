@@ -6,6 +6,10 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    ags.url = "github:aylur/ags";
+
+    astal.url = "github:aylur/astal";
+
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";

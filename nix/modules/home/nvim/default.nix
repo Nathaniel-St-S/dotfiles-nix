@@ -33,8 +33,6 @@ in
 
       # LSP
       nvim-lspconfig
-      mason-nvim
-      mason-lspconfig-nvim
       otter-nvim
 
       # Treesitter
@@ -81,10 +79,8 @@ in
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
       emmet-language-server
-      racket
       typst
       tinymist
-
       tree-sitter
       graphviz
       ripgrep

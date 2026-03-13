@@ -33,8 +33,8 @@ nixpkgs.lib.nixosSystem {
         backupFileExtension = "hm-backup";
         sharedModules = [ 
           inputs.niri.homeModules.niri 
+          inputs.nix-index-database.homeModules.nix-index
           inputs.spicetify-nix.homeManagerModules.spicetify
-          inputs.nix-index-database.hmModules.nix-index
         ];
         users.${username} = import ../modules/home;
       };
