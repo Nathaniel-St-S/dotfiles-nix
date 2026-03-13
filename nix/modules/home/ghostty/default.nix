@@ -29,7 +29,7 @@
 
       custom-shader = "cursor_smear.glsl";
 
-      config-file = "${config.home.homeDirectory}/.cache/wal/colors-ghostty";
+      config-file = "${config.home.homeDirectory}/.cache/wal/ghostty.conf";
 
       # Keynbinds
       keybind = "ctrl+enter=unbind";

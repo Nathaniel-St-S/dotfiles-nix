@@ -1,20 +1,21 @@
-{ inputs, pkgs, ... }:{
-  # add the home manager module
+{ inputs, pkgs, ... }: {
   imports = [ inputs.ags.homeManagerModules.default ];
-
-  # add the astal cli
-  home.packages = [ inputs.astal.packages.${pkgs.system}.notifd ];
 
   programs.ags = {
     enable = true;
 
-    # symlink to ~/.config/ags
+    # Symlinks the config dir to ~/.config/ags
     configDir = ./config;
 
-    # additional packages and executables to add to gjs's runtime
+    # Astal libraries + any executables made available to the GJS runtime
     extraPackages = with pkgs; [
       inputs.astal.packages.${pkgs.system}.battery
-      fzf
+      inputs.astal.packages.${pkgs.system}.wireplumber
+      inputs.astal.packages.${pkgs.system}.bluetooth
+      inputs.astal.packages.${pkgs.system}.network
+      inputs.astal.packages.${pkgs.system}.tray
+      inputs.astal.packages.${pkgs.system}.mpris
+      playerctl
     ];
   };
 }
