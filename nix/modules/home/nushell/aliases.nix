@@ -42,11 +42,6 @@
     gcollectd = "nh clean all --nogcroots";
     flakeup   = "nix flake update";
     optimize  = "sudo nix-store --optimize";
-    furnish   = "nh home switch";
-    unpack    = "nh home switch --dry-run";
-    leave     = "nh home rollback";
-    tidy      = "nh home clean --keep-since 7d --keep 3";
-    douse     = "nh home clean all --nogcroots";
 
     x         = "exit";
     halt      = "sudo halt";

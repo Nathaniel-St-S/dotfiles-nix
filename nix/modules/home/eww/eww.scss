@@ -1,0 +1,103 @@
+@import "colors";
+
+* { all: unset; }
+
+.eww_bar {
+  background-color: $background;
+  padding: .3rem;
+}
+
+.launcher_icon {
+  color: $color6;
+  font-family: "Maple Mono NF CN";
+  font-size: 1.7em;
+  padding: 1rem 0 1rem 0;
+}
+
+.works {
+  font-family: "Maple Mono NF CN";
+  padding: .2rem .7rem .2rem .7rem;
+  background-color: $color0;
+  border-radius: 5px;
+}
+
+.empty   { margin: .55rem 0 .55rem 0; color: $color8; font-size: 1.5em; }
+.occupied { margin: .55rem 0 .55rem 0; color: $color5; font-size: 1.5em; }
+.focused  { margin: .55rem 0 .55rem 0; color: $foreground; font-size: 1.5em; }
+
+.control {
+  padding: .5rem;
+  font-size: 1.6em;
+  background-color: $color0;
+  border-radius: 5px;
+}
+
+.bat {
+  font-family: "Maple Mono NF CN";
+  font-size: 1.2em;
+  padding-right: .5rem;
+  color: $color4;
+}
+
+.wifi-icon       { margin-bottom: .2rem; color: $color5; }
+.brightness-icon { margin: .2rem 0 .2rem 0; color: $color3; }
+.volume-icon     { margin: .2rem 0 .2rem 0; color: $color2; }
+
+scale trough {
+  all: unset;
+  background-color: $background;
+  border-radius: 5px;
+  min-height: 80px;
+  min-width: 10px;
+  margin: .3rem 0 .3rem 0;
+}
+
+.bribar trough highlight {
+  background-color: $color3;
+  border-radius: 5px;
+}
+
+.volbar trough highlight {
+  background-color: $color2;
+  border-radius: 5px;
+}
+
+.time {
+  font-family: "Maple Mono NF CN";
+  font-weight: bold;
+  font-size: 1.2em;
+  background-color: $color0;
+  color: $foreground;
+  border-radius: 5px;
+  padding: .7rem 0 .5rem 0;
+  margin: .5rem 0 .5rem 0;
+}
+
+.cal-box {
+  background-color: $color0;
+  font-family: "Maple Mono NF CN";
+  font-size: 1em;
+  font-weight: bold;
+
+  .cal-inner-box {
+    padding: 1rem 1rem .2rem;
+    .cal { padding: .8rem .25rem 0rem; margin-left: 10px; }
+  }
+}
+
+calendar:selected   { color: $color4; }
+calendar.header     { color: $color4; font-weight: bold; }
+calendar.button     { color: $color5; }
+calendar.highlight  { color: $color5; font-weight: bold; }
+calendar:indeterminate { color: $background; }
+
+.powermenu {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.button-off  { margin-bottom: .5rem; color: $color1; padding: .5rem .2rem .3rem .2rem; }
+.button-reb  { color: $color3; padding: .5rem .2rem .3rem .2rem; }
+.button-sus  { color: $color4; padding: .5rem .2rem .3rem .2rem; }
+.button-quit { color: $color5; padding: .5rem .2rem .3rem .2rem; }
+.button-lock { color: $color4; padding: .5rem .2rem .3rem .2rem; }

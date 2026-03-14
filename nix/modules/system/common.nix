@@ -74,9 +74,14 @@
   # Packages
   nixpkgs.config.allowUnfree = true; 
   nix.package = pkgs.lixPackageSets.latest.lix;
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; 
+    let
+      sddm-theme = pkgs.sddm-astronaut.override { embeddedTheme = "pixel_sakura"; };
+    in
+    [
     #Core Utils
     gnumake pciutils
+    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # Nice to haves
     sioyek loupe
@@ -89,10 +94,13 @@
     clippy rustfmt racket
     python315
 
-    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    # For Sddm
+    sddm-theme
+    kdePackages.qtmultimedia
+
   ];
   # Sync local spotify tracks with phones and other devices on my network
-  networking.firewall.allowedTCPPorts = [ 57621 ];
+  # networking.firewall.allowedTCPPorts = [ 57621 ];
   # Enable spotify to be discovered by other devices
   # networking.firewall.allowedUDPPorts = [ 5353 ];
 
@@ -149,23 +157,16 @@
   };
   services.blueman.enable = true;
 
-  services.displayManager.ly = {
+  services.displayManager.sddm = {
     enable = true;
-    x11Support = false;
-    settings = {
-      animation           = "colormix";
-      bigclock            = "en";
-      hide_key_hints      = true;
-      hide_version_string = true;
-      asterisk            = "0x2022";
-      colormix_col1       = "0x00936EE8";
-      colormix_col2       = "0x00653FDE";
-      colormix_col3       = "0x20000000";
-      save                = true;
-      clear_password      = true;
-      ly_log              = "/var/log/ly.log";
-      session_log         = "/tmp/ly-session.log";
-    };
+    wayland.enable = true;
+    theme = "sddm-astronaut-theme";
+    package = pkgs.kdePackages.sddm;
+    extraPackages = 
+      let
+      theme = pkgs.sddm-astronaut.override { embeddedTheme = "pixel_sakura"; };
+      in 
+      [ theme pkgs.kdePackages.qtmultimedia ];
   };
 
   services.keyd = {

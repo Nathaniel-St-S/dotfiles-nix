@@ -54,6 +54,9 @@ let
         echo "Waybar not running, skipping restart"
       fi
 
+      echo "Linking eww colors..."
+      ln -sf "$HOME/.cache/wal/colors.scss" "$HOME/.config/eww/colors.scss"
+
       echo "POST-COMMAND FINISHED at $(date)"
       echo "---"
     '';

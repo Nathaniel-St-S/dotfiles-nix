@@ -248,7 +248,12 @@
     vim.keymap.set({ "x", "o" }, "as", function()
       sel.select_textobject("@local.scope", "textobjects")
     end)
-    
+
+    -- Add yuck/eww support
+    vim.filetype.add({
+      extension = { yuck = "yuck" }
+    })
+
     -- ────────────────────────────────────────────────────────────────────────
     -- Telescope
     -- ────────────────────────────────────────────────────────────────────────
@@ -292,19 +297,6 @@
     require("mini.ai").setup({ n_lines = 500 })
     
     require("mini.surround").setup()
-    
-    -- ────────────────────────────────────────────────────────────────────────
-    -- ts-comments
-    -- ────────────────────────────────────────────────────────────────────────
-    require("ts-comments").setup({
-      lang = {
-        json  = "// %s",
-        jsonc = "// %s",
-        css   = "/* %s */",
-        scss  = "/* %s */",
-        rasi  = "/* %s */",
-      },
-    })
     
     -- ────────────────────────────────────────────────────────────────────────
     -- typst-preview

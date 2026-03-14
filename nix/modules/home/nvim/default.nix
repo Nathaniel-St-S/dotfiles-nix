@@ -39,9 +39,10 @@ in
       (nvim-treesitter.withPlugins (p: with p; [
         lua nix bash rust go c cpp python typescript javascript
         html css json yaml toml markdown typst racket zig nu
-        rasi glsl ini zsh tmux
+        rasi glsl ini zsh tmux yuck
       ]))
       nvim-treesitter-textobjects
+      yuck-vim
 
       # Fuzzy finding
       telescope-nvim
@@ -54,8 +55,8 @@ in
       nvim-web-devicons
       nvim-colorizer-lua
       mini-nvim
-      ts-comments-nvim
-      vim-tmux-navigator
+      # ts-comments-nvim
+      # vim-tmux-navigator
 
       # Colorscheme
       pywal16-nvim

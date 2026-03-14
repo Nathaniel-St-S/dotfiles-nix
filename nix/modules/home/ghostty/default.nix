@@ -21,9 +21,8 @@
       window-padding-y = 0;
       window-padding-balance = true;
 
-      # [TODO] add this when nix updates ghostty package to 1.3.0
-      # notify-on-command-finish = "unfocused";
-      # notify-on-command-finish-action = "no-bell,notify";
+      notify-on-command-finish = "unfocused";
+      notify-on-command-finish-action = "no-bell,notify";
 
       adjust-cell-height = 1;
 

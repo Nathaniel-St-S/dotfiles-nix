@@ -1,0 +1,147 @@
+(defvar eww "eww -c $HOME/.config/eww")
+
+;; Workspaces ;;
+(defwidget workspaces []
+  (literal :content workspace))
+(deflisten workspace "scripts/workspace")
+
+;; Battery ;;
+(defwidget bat []
+  (box :orientation "v" :space-evenly "false"
+    (label :class "bat"
+           :halign "end"
+           :text battery
+           :tooltip "Battery: ${battery-capacity}%")))
+(defpoll battery          :interval "1s" "scripts/battery icon")
+(defpoll battery-capacity :interval "1s" "scripts/battery percent")
+
+;; Wifi ;;
+(defwidget wifi []
+  (box :orientation "v" :tooltip wifi-name
+    (button :onclick "scripts/popup wifi"
+            :class "wifi-icon" wifi-icon)))
+(defpoll wifi-icon :interval "1s" "scripts/wifi icon")
+(defpoll wifi-name :interval "1s" "scripts/wifi name")
+
+;; Brightness ;;
+(defwidget bright []
+  (eventbox :onhover "${eww} update bright=true"
+            :onhoverlost "${eww} update bright=false"
+    (box :orientation "v" :space-evenly "false" :spacing 2
+      (revealer :transition "slideup" :reveal bright :duration "550ms"
+        (scale :class "bribar"
+               :value current-brightness
+               :tooltip "Brightness: ${current-brightness}%"
+               :onchange "brightnessctl set {}%"
+               :orientation "v"
+               :flipped true
+               :max 101
+               :min 0))
+      (label :class "brightness-icon" :text ""))))
+(defpoll current-brightness :interval "1s"
+  "brightnessctl -m | awk -F, '{print substr($4, 0, length($4)-1)}'")
+(defvar bright false)
+
+;; Volume ;;
+(defwidget volum []
+  (eventbox :onhover "${eww} update volum=true"
+            :onhoverlost "${eww} update volum=false"
+    (box :orientation "v" :space-evenly "false" :spacing "2"
+      (revealer :transition "slideup" :reveal volum :duration "550ms"
+        (scale :class "volbar"
+               :value current-volume
+               :orientation "v"
+               :flipped true
+               :tooltip "Volume: ${current-volume}%"
+               :max 101
+               :min 0
+               :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%"))
+      (button :onclick "scripts/popup audio" :class "volume-icon" ""))))
+(defpoll current-volume :interval "1s"
+  "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{printf \"%d\", $2 * 100}'")
+(defvar volum false)
+
+;; Control ;;
+(defwidget control []
+  (box :orientation "v" :space-evenly false :class "control"
+    (bat)
+    (wifi)
+    (bright)
+    (volum)))
+
+;; Clock ;;
+(defwidget time []
+  (box :orientation "v" :class "time" :valign "end"
+    (button :onclick "scripts/popup calendar" :class "time-hour" hour)
+    (button :onclick "scripts/popup calendar" :class "time-min" min)))
+(defpoll hour :interval "1s" "date '+%H'")
+(defpoll min  :interval "1s" "date '+%M'")
+
+;; Calendar ;;
+(defwidget cal []
+  (box :class "cal-box" :orientation "v"
+    (box :class "cal-inner-box"
+      (calendar :class "cal"
+                :day calendar_day
+                :month calendar_month
+                :year calendar_year))))
+(defpoll calendar_day   :interval "10h" "date '+%d'")
+(defpoll calendar_month :interval "10h" "scripts/calendar")
+(defpoll calendar_year  :interval "10h" "date '+%Y'")
+
+;; Power ;;
+(defwidget power []
+  (eventbox :onhover "${eww} update power=true"
+            :onhoverlost "${eww} update power=false"
+    (box :orientation "v" :space-evenly "false" :vexpand "false" :class "powermenu"
+      (revealer :transition "slideup" :reveal power :duration "550ms"
+        (box :orientation "v" :space-evenly "false"
+          (button :class "button-reb"  :tooltip "Reboot"      :onclick "systemctl reboot"       "")
+          (button :class "button-sus"  :tooltip "Suspend"     :onclick "systemctl suspend"      "")
+          (button :class "button-lock" :tooltip "Lock Screen" :onclick "hyprlock"               "")
+          (button :class "button-quit" :tooltip "Logout"      :onclick "niri msg action quit"   "")))
+      (button :class "button-off" :tooltip "Shutdown" :onclick "systemctl poweroff" ""))))
+(defvar power false)
+
+;; Layout ;;
+(defwidget top []
+  (box :orientation "v" :space-evenly "false" :valign "start"
+    (workspaces)))
+
+(defwidget end []
+  (box :orientation "v" :space-evenly false :valign "end" :spacing 5
+    (control)
+    (time)
+    (power)))
+
+(defwidget bar []
+  (box :class "eww_bar"
+       :orientation "v"
+       :vexpand "false"
+       :hexpand "false"
+    (top)
+    (end)))
+
+;; Windows ;;
+(defwindow bar
+  :monitor 0
+  :geometry (geometry :x "0"
+                      :y "0"
+                      :width "47px"
+                      :height "100%"
+                      :anchor "center left")
+  :stacking "overlay"
+  :exclusive true
+  :focusable false
+  (bar))
+
+(defwindow calendar
+  :monitor 0
+  :geometry (geometry :x "70px"
+                      :y "65%"
+                      :width "270px"
+                      :height "60px"
+                      :anchor "bottom left")
+  :stacking "fg"
+  :focusable false
+  (cal))
